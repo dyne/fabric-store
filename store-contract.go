@@ -22,11 +22,10 @@ func (sc *StoreContract) Store(ctx contractapi.TransactionContextInterface, valu
 
   // Compute a key for the value, the key depends on the content of the value
   // and the current timestamp
-  valueHash := sha256.Sum256([]byte(value))
   t := uint64(time.Now().Unix())
   byteT := make([]byte, 8)
   binary.LittleEndian.PutUint64(byteT, t)
-  keyPreimage := append(valueHash[:],  byteT...)
+  keyPreimage := append([]byte(value),  byteT...)
   keyBytes := sha256.Sum256(keyPreimage)
 
   key := hex.EncodeToString(keyBytes[:])
